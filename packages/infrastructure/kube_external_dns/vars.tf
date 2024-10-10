@@ -18,8 +18,8 @@ variable "route53_zones" {
   default = {}
 }
 
-variable "cloudflare_dns_names" {
-  description = "A list of public DNS DNS names managed by Cloudflare; external-dns uses this to set domain records"
+variable "cloudflare_zones" {
+  description = "A list of public DNS domain names managed by Cloudflare; external-dns uses this to set domain records"
   type = list(string)
   default = []
 }

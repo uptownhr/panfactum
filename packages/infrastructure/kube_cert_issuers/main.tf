@@ -42,7 +42,7 @@ locals {
   ]
 
   cloudflare_solvers = [
-    for domain in var.cloudflare_dns_names : {
+    for domain in var.cloudflare_zones : {
       dns01 = {
         cloudflare = {
           email    = var.alert_email

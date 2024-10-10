@@ -30,12 +30,12 @@ locals {
 
   all_roles = toset([for domain, config in var.route53_zones : config.record_manager_role_arn])
 
-  cloudflare_config = { for domain in var.cloudflare_dns_names : domain => {
+  cloudflare_config = { for domain in var.cloudflare_zones : domain => {
     labels = { domain : sha1(domain) }
     provider = "cloudflare"
 
     included_domains = [domain]
-    excluded_domains = [for excluded_domain in var.cloudflare_dns_names : excluded_domain if excluded_domain != domain]
+    excluded_domains = [for excluded_domain in var.cloudflare_zones : excluded_domain if excluded_domain != domain]
 
     env = [
       { name = "CF_API_TOKEN", value = var.cloudflare_api_token }

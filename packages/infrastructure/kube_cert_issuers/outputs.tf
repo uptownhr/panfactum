@@ -8,7 +8,7 @@ output "route53_zones" {
   value       = var.route53_zones
 }
 
-output "cloudflare_dns_names" {
+output "cloudflare_zones" {
   description = "The cloudflare DNS names provided as an input"
-  value       = var.cloudflare_dns_names
+  value       = var.cloudflare_zones
 }

@@ -24,8 +24,8 @@ variable "route53_zones" {
   default = {}
 }
 
-variable "cloudflare_dns_names" {
-  description = "A list of public DNS DNS names managed by Cloudflare; cert-manager uses this to issue public-facing certificates."
+variable "cloudflare_zones" {
+  description = "A list of public DNS domains managed by Cloudflare; cert-manager uses this to issue public-facing certificates."
   type = list(string)
   default = []
 }
