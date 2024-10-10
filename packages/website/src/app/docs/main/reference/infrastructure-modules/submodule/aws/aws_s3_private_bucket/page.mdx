@@ -3,8 +3,7 @@ import ModuleHeader from "../../../ModuleHeader";
 {/* lint disable no-duplicate-headings */}
 
 {/* eslint-disable import/order */}
-
-<ModuleHeader name="aws_s3_private_bucket" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/aws_s3_private_bucket" status="stable" type="submodule" />
+<ModuleHeader name="aws_s3_private_bucket" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/aws_s3_private_bucket" status="stable" type="submodule"/>
 
 # Private S3 Bucket
 
@@ -12,23 +11,23 @@ This module provides our standard configuration for private S3 buckets.
 
 Notably it includes:
 
-* versioning
+- versioning
 
-* access control
+- access control
 
-* storage tiering and expiration
+- storage tiering and expiration
 
-* encryption
+- encryption
 
-* public access blocks
+- public access blocks
 
-* ownership controls
+- ownership controls
 
 ## Providers
 
 The following providers are needed by this module:
 
-* [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
+- [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
 
 ## Required Inputs
 
@@ -74,6 +73,7 @@ Type: `bool`
 
 Default: `false`
 
+
 ### expire\_after\_days
 
 Description: Whether objects older than indicated days should be deleted. (0 to disable)
@@ -89,6 +89,7 @@ Description: Whether old object versions should be expired.
 Type: `bool`
 
 Default: `true`
+
 
 ### force\_destroy
 
@@ -106,6 +107,7 @@ Type: `bool`
 
 Default: `true`
 
+
 ### kms\_master\_key\_id
 
 Description: If provided, will use this CMK for bucket encryption (SSS-KMS) rather than the SSE-S3 key
@@ -113,6 +115,11 @@ Description: If provided, will use this CMK for bucket encryption (SSS-KMS) rath
 Type: `string`
 
 Default: `null`
+
+
+
+
+
 
 ### timed\_transitions\_enabled
 

@@ -3,8 +3,7 @@ import ModuleHeader from "../../../ModuleHeader";
 {/* lint disable no-duplicate-headings */}
 
 {/* eslint-disable import/order */}
-
-<ModuleHeader name="kube_gha_runners" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_gha_runners" status="beta" type="direct" />
+<ModuleHeader name="kube_gha_runners" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_gha_runners" status="beta" type="direct"/>
 
 # GHA Runners
 
@@ -62,15 +61,15 @@ in the cluster while sitting idle.
 
 The following providers are needed by this module:
 
-* [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
+- [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
 
-* [helm](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs) (2.12.1)
+- [helm](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs) (2.12.1)
 
-* [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
+- [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
 
-* [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
+- [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
 
-* [vault](https://registry.terraform.io/providers/hashicorp/vault/3.25.0/docs) (3.25.0)
+- [vault](https://registry.terraform.io/providers/hashicorp/vault/3.25.0/docs) (3.25.0)
 
 ## Required Inputs
 
@@ -107,6 +106,7 @@ map(object({
 
 The following input variables are optional (have default values):
 
+
 ### extra\_env\_secrets
 
 Description: A key-value mapping of extra secret environment variables for the runner pods
@@ -131,6 +131,7 @@ Type: `map(string)`
 
 Default: `{}`
 
+
 ### gha\_runner\_scale\_set\_helm\_version
 
 Description: The version of the  actions-runner-controller-charts/gha-runner-scale-set helm chart to deploy
@@ -138,6 +139,7 @@ Description: The version of the  actions-runner-controller-charts/gha-runner-sca
 Type: `string`
 
 Default: `"0.9.3"`
+
 
 ### node\_image\_cache\_enabled
 
@@ -155,6 +157,10 @@ Type: `bool`
 
 Default: `true`
 
+
+
+
+
 ### pull\_through\_cache\_enabled
 
 Description: Whether to use the ECR pull through cache for the deployed images
@@ -162,6 +168,7 @@ Description: Whether to use the ECR pull through cache for the deployed images
 Type: `bool`
 
 Default: `true`
+
 
 ## Outputs
 

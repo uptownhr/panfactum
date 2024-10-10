@@ -3,8 +3,7 @@ import ModuleHeader from "../../../ModuleHeader";
 {/* lint disable no-duplicate-headings */}
 
 {/* eslint-disable import/order */}
-
-<ModuleHeader name="kube_vault_proxy" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_vault_proxy" status="stable" type="submodule" />
+<ModuleHeader name="kube_vault_proxy" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_vault_proxy" status="stable" type="submodule"/>
 
 # Vault OAuth2 Proxy
 
@@ -15,7 +14,7 @@ that requires authentication with the cluster's Vault instance.
 
 ### Setup
 
-This module is intended to be used in conjunction with the [kube\_ingress](/docs/main/reference/infrastructure-modules/submodule/kubernetes/kube_ingress)
+This module is intended to be used in conjunction with the [kube\_ingress](/docs/main/reference/infrastructure-modules/submodule/kubernetes/kube\_ingress)
 module. `domain` should be set to a domain used in `kube_ingress` and the `upstream_ingress_annotations` output
 should be passed to the `extra_annotations` input of `kube_ingress`.
 
@@ -31,24 +30,24 @@ the whole process adds very little overhead.
 There are a few means to validate users. Each of these can be used simultaneously, and a user must meet **all**
 the constraints to be authorized.
 
-* **allowed\_email\_domains**: Email domains that are allowed (sourced from Authentik)
-* **allowed\_vault\_roles**: The user's role in the cluster's Vault instance (one of `rbac-superusers`, `rbac-admins`, `rbac-readers`, `rbac-restricted-readers`)
+- **allowed\_email\_domains**: Email domains that are allowed (sourced from Authentik)
+- **allowed\_vault\_roles**: The user's role in the cluster's Vault instance (one of `rbac-superusers`, `rbac-admins`, `rbac-readers`, `rbac-restricted-readers`)
 
 ## Providers
 
 The following providers are needed by this module:
 
-* [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
+- [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
 
-* [helm](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs) (2.12.1)
+- [helm](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs) (2.12.1)
 
-* [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
+- [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
 
-* [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
+- [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
 
-* [random](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs) (3.6.0)
+- [random](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs) (3.6.0)
 
-* [vault](https://registry.terraform.io/providers/hashicorp/vault/3.25.0/docs) (3.25.0)
+- [vault](https://registry.terraform.io/providers/hashicorp/vault/3.25.0/docs) (3.25.0)
 
 ## Required Inputs
 
@@ -115,6 +114,8 @@ Type: `bool`
 
 Default: `true`
 
+
+
 ### instance\_type\_spread\_required
 
 Description: Whether to enable topology spread constraints to spread pods across instance types (with DoNotSchedule)
@@ -122,6 +123,7 @@ Description: Whether to enable topology spread constraints to spread pods across
 Type: `bool`
 
 Default: `true`
+
 
 ### oauth2\_proxy\_helm\_version
 
@@ -147,6 +149,10 @@ Type: `string`
 
 Default: `"/"`
 
+
+
+
+
 ### pull\_through\_cache\_enabled
 
 Description: Whether to use the ECR pull through cache for the deployed images
@@ -154,6 +160,7 @@ Description: Whether to use the ECR pull through cache for the deployed images
 Type: `bool`
 
 Default: `true`
+
 
 ### vpa\_enabled
 

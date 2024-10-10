@@ -3,8 +3,7 @@ import ModuleHeader from "../../../ModuleHeader";
 {/* lint disable no-duplicate-headings */}
 
 {/* eslint-disable import/order */}
-
-<ModuleHeader name="kube_external_dns" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_external_dns" status="stable" type="direct" />
+<ModuleHeader name="kube_external_dns" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_external_dns" status="stable" type="direct"/>
 
 # Kubernetes External DNS
 
@@ -14,17 +13,7 @@ It is only set up to work with Route53 as a part of the complete Panfactum stack
 
 ## Providers
 
-The following providers are needed by this module:
-
-* [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
-
-* [helm](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs) (2.12.1)
-
-* [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
-
-* [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
-
-* [random](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs) (3.6.0)
+No requirements.
 
 ## Required Inputs
 
@@ -48,13 +37,32 @@ Type: `list(string)`
 
 Default: `[]`
 
+### cloudflare\_api\_token
+
+Description: Cloudflare API Token
+
+Type: `string`
+
+Default: `null`
+
+### cloudflare\_zones
+
+Description: A list of public DNS domain names managed by Cloudflare; external-dns uses this to set domain records
+
+Type: `list(string)`
+
+Default: `[]`
+
+
 ### external\_dns\_helm\_version
 
 Description: The version of the ExternalDNS helm chart to deploy
 
 Type: `string`
 
-Default: `"1.14.3"`
+Default: `"1.14.5"`
+
+
 
 ### log\_level
 
@@ -80,6 +88,10 @@ Type: `bool`
 
 Default: `true`
 
+
+
+
+
 ### pull\_through\_cache\_enabled
 
 Description: Whether to use the ECR pull through cache for the deployed images
@@ -87,6 +99,7 @@ Description: Whether to use the ECR pull through cache for the deployed images
 Type: `bool`
 
 Default: `true`
+
 
 ### route53\_zones
 
@@ -102,26 +115,6 @@ map(object({
 ```
 
 Default: `{}`
-
-### cloudflare\_zones
-
-Description: A list of public DNS domain names managed by Cloudflare; external-dns uses this to set domain records
-
-Type:
-
-```hcl
-list(string)
-```
-
-Default: `[]`
-
-### cloudflare\_api\_token
-
-Description: Cloudflare API Token that has been given scoped access to the Cloudflare zones
-
-Type: `string`
-
-Default: `null`
 
 ### vpa\_enabled
 

@@ -3,8 +3,7 @@ import ModuleHeader from "../../../ModuleHeader";
 {/* lint disable no-duplicate-headings */}
 
 {/* eslint-disable import/order */}
-
-<ModuleHeader name="kube_vpa" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_vpa" status="stable" type="direct" />
+<ModuleHeader name="kube_vpa" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_vpa" status="stable" type="direct"/>
 
 # Kubernetes VPA
 
@@ -30,30 +29,30 @@ not set `history_length_hours` to greater than 1 week as this will cause signifi
 The VPA can use Prometheus as the source of its recommendations when setting pod resources.
 To enable this in the Panfactum stack:
 
-* Ensure you have deployed [kube\_monitoring](/docs/edge/reference/infrastructure-modules/kubernetes/kube_monitoring).
-  Note that `kube_monitoring` **must** have been deployed for at least `history_length_hours`
-  in order for the VPA to work properly.
+- Ensure you have deployed [kube\_monitoring](/docs/edge/reference/infrastructure-modules/kubernetes/kube\_monitoring).
+Note that `kube_monitoring` **must** have been deployed for at least `history_length_hours`
+in order for the VPA to work properly.
 
-* Set `prometheus_enabled` to `true`.
+- Set `prometheus_enabled` to `true`.
 
-* Add the `thanos_query_frontend_url` input from the `kube_monitoring` output.
+- Add the `thanos_query_frontend_url` input from the `kube_monitoring` output.
 
-* Apply the module.
+- Apply the module.
 
-* If you had previously deployed the VPA without Prometheus, delete all `Verticalpodautoscalercheckpoints`:
-  `kubectl delete -A verticalpodautoscalercheckpoints.autoscaling.k8s.io --all`.
+- If you had previously deployed the VPA without Prometheus, delete all `Verticalpodautoscalercheckpoints`:
+`kubectl delete -A verticalpodautoscalercheckpoints.autoscaling.k8s.io --all`.
 
 ## Providers
 
 The following providers are needed by this module:
 
-* [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
+- [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
 
-* [helm](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs) (2.12.1)
+- [helm](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs) (2.12.1)
 
-* [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
+- [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
 
-* [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
+- [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
 
 ## Required Inputs
 
@@ -71,6 +70,8 @@ Type: `bool`
 
 Default: `true`
 
+
+
 ### history\_length\_hours
 
 Description: The number of prior hours of metrics data that will be used for VPA recommendations
@@ -78,6 +79,7 @@ Description: The number of prior hours of metrics data that will be used for VPA
 Type: `number`
 
 Default: `24`
+
 
 ### log\_verbosity
 
@@ -103,6 +105,10 @@ Type: `bool`
 
 Default: `false`
 
+
+
+
+
 ### prometheus\_enabled
 
 Description: Whether to enable prometheus as the storage backend for the VPA recommender
@@ -118,6 +124,7 @@ Description: Whether to use the ECR pull through cache for the deployed images
 Type: `bool`
 
 Default: `true`
+
 
 ### thanos\_query\_frontend\_url
 

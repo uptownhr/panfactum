@@ -3,29 +3,28 @@ import ModuleHeader from "../../../ModuleHeader";
 {/* lint disable no-duplicate-headings */}
 
 {/* eslint-disable import/order */}
-
-<ModuleHeader name="kube_scheduler" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_scheduler" status="stable" type="direct" />
+<ModuleHeader name="kube_scheduler" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_scheduler" status="stable" type="direct"/>
 
 # Kubernetes Scheduler
 
 An alternative Kubernetes scheduler used to optimize resource utilization
 in the Panfactum stack.
 
-See this article for [motivation.](https://clickhouse.com/blog/packing-kubernetes-pods-more-efficiently-saving-money?utm_medium=social\&utm_source=twitter\&utm_campaign=blog)
+See this article for [motivation.](https://clickhouse.com/blog/packing-kubernetes-pods-more-efficiently-saving-money?utm_medium=social&utm_source=twitter&utm_campaign=blog)
 
 ## Providers
 
 The following providers are needed by this module:
 
-* [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
+- [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
 
-* [helm](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs) (2.12.1)
+- [helm](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs) (2.12.1)
 
-* [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
+- [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
 
-* [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
+- [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
 
-* [random](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs) (3.6.0)
+- [random](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs) (3.6.0)
 
 ## Required Inputs
 
@@ -43,6 +42,9 @@ Type: `bool`
 
 Default: `true`
 
+
+
+
 ### log\_verbosity
 
 Description: The log verbosity (1-9) for the scheduler pods
@@ -59,6 +61,10 @@ Type: `bool`
 
 Default: `false`
 
+
+
+
+
 ### pull\_through\_cache\_enabled
 
 Description: Whether to use the ECR pull through cache for the deployed images
@@ -66,6 +72,7 @@ Description: Whether to use the ECR pull through cache for the deployed images
 Type: `bool`
 
 Default: `true`
+
 
 ### scheduler\_version
 

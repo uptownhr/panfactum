@@ -3,8 +3,7 @@ import ModuleHeader from "../../../ModuleHeader";
 {/* lint disable no-duplicate-headings */}
 
 {/* eslint-disable import/order */}
-
-<ModuleHeader name="kube_ingress_nginx" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_ingress_nginx" status="stable" type="direct" />
+<ModuleHeader name="kube_ingress_nginx" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_ingress_nginx" status="stable" type="direct"/>
 
 # Kubernetes Ingress Nginx
 
@@ -14,15 +13,15 @@ The module deploys the [Ingress NGINX Controller.](https://kubernetes.github.io/
 
 The following providers are needed by this module:
 
-* [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
+- [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
 
-* [helm](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs) (2.12.1)
+- [helm](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs) (2.12.1)
 
-* [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
+- [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
 
-* [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
+- [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
 
-* [random](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs) (3.6.0)
+- [random](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs) (3.6.0)
 
 ## Required Inputs
 
@@ -52,6 +51,8 @@ Type: `bool`
 
 Default: `true`
 
+
+
 ### ingress\_timeout\_seconds
 
 Description: The maximum number of seconds that request may take.
@@ -59,6 +60,7 @@ Description: The maximum number of seconds that request may take.
 Type: `number`
 
 Default: `60`
+
 
 ### max\_replicas
 
@@ -100,6 +102,10 @@ Type: `bool`
 
 Default: `true`
 
+
+
+
+
 ### pull\_through\_cache\_enabled
 
 Description: Whether to use the ECR pull through cache for the deployed images
@@ -107,6 +113,7 @@ Description: Whether to use the ECR pull through cache for the deployed images
 Type: `bool`
 
 Default: `true`
+
 
 ### tls\_1\_2\_enabled
 

@@ -3,8 +3,7 @@ import ModuleHeader from "../../../ModuleHeader";
 {/* lint disable no-duplicate-headings */}
 
 {/* eslint-disable import/order */}
-
-<ModuleHeader name="kube_rbac" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_rbac" status="stable" type="direct" />
+<ModuleHeader name="kube_rbac" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_rbac" status="stable" type="direct"/>
 
 # Kubernetes RBAC
 
@@ -18,28 +17,28 @@ namespace level through the namespace module in access-control.**
 See the below table for our standard Kubernetes groups, the AWS roles linked to each group (through this module'
 input variables), and the description of the intended permission level.
 
-| Kubernetes Group    | AWS Roles Linked               | Permission Level                                           |
-| ------------------- | ------------------------------ | ---------------------------------------------------------- |
-| `system:superusers` | `var.kube_superuser_role_arns` | `cluster-admin`                                            |
-| `system:admins`     | `var.kube_admin_role_arns`     | Write access to everything besides core cluster utilities. |
-| `system:readers`    | `var.kube_reader_role_arns`    | Read access to all non-admin resources except secrets.     |
+| Kubernetes Group     | AWS Roles Linked                | Permission Level                                           |
+|----------------------|---------------------------------|------------------------------------------------------------|
+| `system:superusers`  | `var.kube_superuser_role_arns`  | `cluster-admin`                                            |
+| `system:admins`      | `var.kube_admin_role_arns`      | Write access to everything besides core cluster utilities. |
+| `system:readers`     | `var.kube_reader_role_arns`     | Read access to all non-admin resources except secrets.     |
 
 ## Maintainer Notes
 
-* This requires the cluster first be deployed via the [aws\_eks module](/docs/main/reference/infrastructure-modules/aws/aws_eks).
+- This requires the cluster first be deployed via the [aws\_eks module](/docs/main/reference/infrastructure-modules/aws/aws\_eks).
 
-* You will need to import the `kubernetes_config_map.aws_auth` resource and apply those changes in order for the nodes
+- You will need to import the `kubernetes_config_map.aws_auth` resource and apply those changes in order for the nodes
   to successfully register. You will need to use the credentials of the cluster owner (the IAM entity that originally created the cluster).
 
 ## Providers
 
 The following providers are needed by this module:
 
-* [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
+- [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
 
-* [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
+- [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
 
-* [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
+- [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
 
 ## Required Inputs
 
@@ -54,6 +53,9 @@ Type: `string`
 ## Optional Inputs
 
 The following input variables are optional (have default values):
+
+
+
 
 ### kube\_admin\_role\_arns
 
@@ -86,6 +88,11 @@ Description: AWS IAM role ARNs that have 'cluster-admin' access to the cluster.
 Type: `list(string)`
 
 Default: `[]`
+
+
+
+
+
 
 ## Outputs
 

@@ -3,8 +3,7 @@ import ModuleHeader from "../../../ModuleHeader";
 {/* lint disable no-duplicate-headings */}
 
 {/* eslint-disable import/order */}
-
-<ModuleHeader name="kube_gha" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_gha" status="beta" type="direct" />
+<ModuleHeader name="kube_gha" sourceHref="https://github.com/Panfactum/stack/tree/__PANFACTUM_VERSION_MAIN__/packages/infrastructure/kube_gha" status="beta" type="direct"/>
 
 # GHA Self-hosted Runner Controllers
 
@@ -17,13 +16,13 @@ For installation instructions, see our [guide](/docs/main/guides/addons/github-a
 
 The following providers are needed by this module:
 
-* [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
+- [aws](https://registry.terraform.io/providers/hashicorp/aws/5.39.1/docs) (5.39.1)
 
-* [helm](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs) (2.12.1)
+- [helm](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs) (2.12.1)
 
-* [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
+- [kubectl](https://registry.terraform.io/providers/alekc/kubectl/2.0.4/docs) (2.0.4)
 
-* [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
+- [kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs) (2.27.0)
 
 ## Required Inputs
 
@@ -33,6 +32,8 @@ No required inputs.
 
 The following input variables are optional (have default values):
 
+
+
 ### gha\_runner\_scale\_set\_controller\_helm\_version
 
 Description: The version of the actions-runner-controller-charts/gha-runner-scale-set-controller helm chart to deploy
@@ -40,6 +41,7 @@ Description: The version of the actions-runner-controller-charts/gha-runner-scal
 Type: `string`
 
 Default: `"0.9.3"`
+
 
 ### log\_level
 
@@ -57,6 +59,10 @@ Type: `bool`
 
 Default: `true`
 
+
+
+
+
 ### pull\_through\_cache\_enabled
 
 Description: Whether to use the ECR pull through cache for the deployed images
@@ -64,6 +70,7 @@ Description: Whether to use the ECR pull through cache for the deployed images
 Type: `bool`
 
 Default: `true`
+
 
 ### vpa\_enabled
 
