@@ -28,14 +28,12 @@ locals {
   name      = "external-dns"
   namespace = module.namespace.namespace
 
-  all_roles = toset([for domain, config in var.route53_zones : config.record_manager_role_arn])
-  config = { for role in local.all_roles : role => {
-    labels           = { role : sha1(role) }
-    zone_ids         = [for domain, config in var.route53_zones : config.zone_id if config.record_manager_role_arn == role]
-    included_domains = [for domain, config in var.route53_zones : domain if config.record_manager_role_arn == role]
-    excluded_domains = [for domain, config in var.route53_zones : domain if config.record_manager_role_arn != role && alltrue([for includedDomain, config in var.route53_zones : !endswith(includedDomain, domain) if config.record_manager_role_arn == role])] // never exclude an ancestor of an included domain
-  } }
+  config = { for domain in var.cloudflare_zones : domain => {
+    labels = { domain : sha1(domain) }
 
+    included_domains = [domain]
+    excluded_domains = [for excluded_domain in var.cloudflare_zones : excluded_domain if excluded_domain != domain]
+  } }
 }
 
 resource "random_id" "ids" {
@@ -77,21 +75,6 @@ module "constants" {
   source = "../kube_constants"
 }
 
-/***************************************
-* AWS Permissions
-***************************************/
-
-data "aws_region" "main" {}
-
-data "aws_iam_policy_document" "permissions" {
-  for_each = local.config
-  statement {
-    effect    = "Allow"
-    actions   = ["sts:AssumeRole"]
-    resources = [each.key]
-  }
-}
-
 resource "kubernetes_service_account" "external_dns" {
   for_each = local.config
   metadata {
@@ -100,28 +83,6 @@ resource "kubernetes_service_account" "external_dns" {
     labels    = module.util[each.key].labels
   }
 }
-
-module "aws_permissions" {
-  for_each = local.config
-  source   = "../kube_sa_auth_aws"
-
-  service_account           = kubernetes_service_account.external_dns[each.key].metadata[0].name
-  service_account_namespace = local.namespace
-  eks_cluster_name          = var.eks_cluster_name
-  iam_policy_json           = data.aws_iam_policy_document.permissions[each.key].json
-  ip_allow_list             = var.aws_iam_ip_allow_list
-
-  # pf-generate: pass_vars
-  pf_stack_version = var.pf_stack_version
-  pf_stack_commit  = var.pf_stack_commit
-  environment      = var.environment
-  region           = var.region
-  pf_root_module   = var.pf_root_module
-  is_local         = var.is_local
-  extra_tags       = var.extra_tags
-  # end-generate
-}
-
 
 /***************************************
 * Kubernetes Resources
@@ -210,19 +171,18 @@ resource "helm_release" "external_dns" {
 
       // Provider configuration
       provider = {
-        name = "aws"
+        name = "cloudflare"
       }
-      extraArgs = concat(
-        [
-          "--aws-assume-role=${each.key}"
-        ],
-        [for domain in each.value.included_domains : "--domain-filter=${domain}"],
-        [for domain in each.value.excluded_domains : "--exclude-domains=${domain}"],
-        [for zone_id in each.value.zone_ids : "--zone-id-filter=${zone_id}"]
-      )
+
+      domainFilters = each.value.included_domains
+      excludeDomains = each.value.excluded_domains
+
+      extraArgs = []
+
       env = [
-        { name = "AWS_REGION", value = data.aws_region.main.name }
+        { name = "CF_API_TOKEN", value = var.cloudflare_api_token }
       ]
+
       sources    = ["service", "ingress"]
       policy     = "upsert-only"
       txtOwnerId = random_id.ids[each.key].hex
@@ -238,7 +198,7 @@ resource "helm_release" "external_dns" {
     }
   }
 
-  depends_on = [module.aws_permissions]
+  // depends_on = [module.aws_permissions]
 }
 
 resource "kubernetes_config_map" "dashboard" {
