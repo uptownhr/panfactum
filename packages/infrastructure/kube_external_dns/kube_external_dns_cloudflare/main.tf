@@ -8,10 +8,6 @@ terraform {
       source  = "hashicorp/helm"
       version = "2.12.1"
     }
-    aws = {
-      source  = "hashicorp/aws"
-      version = "5.39.1"
-    }
     random = {
       source  = "hashicorp/random"
       version = "3.6.0"
@@ -24,9 +20,8 @@ terraform {
 }
 
 locals {
-
-  name      = "external-dns"
-  namespace = module.namespace.namespace
+  name      = "external-dns-cloudflare"
+  namespace = var.namespace
 
   config = { for domain in var.cloudflare_zones : domain => {
     labels = { domain : sha1(domain) }
@@ -43,13 +38,13 @@ resource "random_id" "ids" {
 }
 
 module "pull_through" {
-  source                     = "../aws_ecr_pull_through_cache_addresses"
+  source                     = "../../aws_ecr_pull_through_cache_addresses"
   pull_through_cache_enabled = var.pull_through_cache_enabled
 }
 
 module "util" {
   for_each = local.config
-  source   = "../kube_workload_utility"
+  source   = "../../kube_workload_utility"
 
   workload_name                 = "external-dns"
   match_labels                  = { id = random_id.ids[each.key].hex }
@@ -72,7 +67,7 @@ module "util" {
 }
 
 module "constants" {
-  source = "../kube_constants"
+  source = "../../kube_constants"
 }
 
 resource "kubernetes_service_account" "external_dns" {
@@ -82,26 +77,6 @@ resource "kubernetes_service_account" "external_dns" {
     namespace = local.namespace
     labels    = module.util[each.key].labels
   }
-}
-
-/***************************************
-* Kubernetes Resources
-***************************************/
-
-module "namespace" {
-  source = "../kube_namespace"
-
-  namespace = local.name
-
-  # pf-generate: pass_vars
-  pf_stack_version = var.pf_stack_version
-  pf_stack_commit  = var.pf_stack_commit
-  environment      = var.environment
-  region           = var.region
-  pf_root_module   = var.pf_root_module
-  is_local         = var.is_local
-  extra_tags       = var.extra_tags
-  # end-generate
 }
 
 resource "helm_release" "external_dns" {
@@ -197,19 +172,6 @@ resource "helm_release" "external_dns" {
       args        = [random_id.ids[each.key].hex]
     }
   }
-
-  // depends_on = [module.aws_permissions]
-}
-
-resource "kubernetes_config_map" "dashboard" {
-  count = var.monitoring_enabled ? 1 : 0
-  metadata {
-    name   = "external-dns-dashboard"
-    labels = { "grafana_dashboard" = "1" }
-  }
-  data = {
-    "external-dns.json" = file("${path.module}/dashboard.json")
-  }
 }
 
 resource "kubectl_manifest" "vpa" {
@@ -264,4 +226,15 @@ resource "kubectl_manifest" "pdb" {
   force_conflicts   = true
   server_side_apply = true
   depends_on        = [helm_release.external_dns]
+}
+
+resource "kubernetes_config_map" "dashboard" {
+  count = var.monitoring_enabled ? 1 : 0
+  metadata {
+    name   = "${local.name}-dashboard"
+    labels = { "grafana_dashboard" = "1" }
+  }
+  data = {
+    "external-dns.json" = file("${path.module}/dashboard.json")
+  }
 }
