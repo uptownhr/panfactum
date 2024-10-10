@@ -24,6 +24,19 @@ variable "route53_zones" {
   default = {}
 }
 
+variable "cloudflare_dns_names" {
+  description = "A list of public DNS DNS names managed by Cloudflare; cert-manager uses this to issue public-facing certificates."
+  type = list(string)
+  default = []
+}
+
+variable "cloudflare_api_token" {
+  description = "Cloudflare API Token"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
 variable "alert_email" {
   description = "An email that will receive certificate alerts."
   type        = string

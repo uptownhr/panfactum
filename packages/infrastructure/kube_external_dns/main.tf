@@ -29,13 +29,39 @@ locals {
   namespace = module.namespace.namespace
 
   all_roles = toset([for domain, config in var.route53_zones : config.record_manager_role_arn])
-  config = { for role in local.all_roles : role => {
-    labels           = { role : sha1(role) }
-    zone_ids         = [for domain, config in var.route53_zones : config.zone_id if config.record_manager_role_arn == role]
-    included_domains = [for domain, config in var.route53_zones : domain if config.record_manager_role_arn == role]
-    excluded_domains = [for domain, config in var.route53_zones : domain if config.record_manager_role_arn != role && alltrue([for includedDomain, config in var.route53_zones : !endswith(includedDomain, domain) if config.record_manager_role_arn == role])] // never exclude an ancestor of an included domain
+
+  cloudflare_config = { for domain in var.cloudflare_dns_names : domain => {
+    labels = { domain : sha1(domain) }
+    provider = "cloudflare"
+
+    included_domains = [domain]
+    excluded_domains = [for excluded_domain in var.cloudflare_dns_names : excluded_domain if excluded_domain != domain]
+
+    env = [
+      { name = "CF_API_TOKEN", value = var.cloudflare_api_token }
+    ]
+    extra_args = []
   } }
 
+
+  aws_config = { for role in local.all_roles : role => {
+    labels           = { role : sha1(role) }
+    provider = "aws"
+
+    included_domains = [for domain, config in var.route53_zones : domain if config.record_manager_role_arn == role]
+    excluded_domains = [for domain, config in var.route53_zones : domain if config.record_manager_role_arn != role && alltrue([for includedDomain, config in var.route53_zones : !endswith(includedDomain, domain) if config.record_manager_role_arn == role])] // never exclude an ancestor of an included domain
+    env = [
+      { name = "AWS_REGION", value = data.aws_region.main.name }
+    ]
+    extra_args = concat(
+      [
+        "--aws-assume-role=${role}"
+      ],
+      [for zone_id in [for domain, config in var.route53_zones : config.zone_id if config.record_manager_role_arn == role] : "--zone-id-filter=${zone_id}"]
+    )
+  } }
+
+  config = merge(local.cloudflare_config, local.aws_config)
 }
 
 resource "random_id" "ids" {
@@ -83,14 +109,14 @@ module "constants" {
 
 data "aws_region" "main" {}
 
-data "aws_iam_policy_document" "permissions" {
+/*data "aws_iam_policy_document" "permissions" {
   for_each = local.config
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
     resources = [each.key]
   }
-}
+}*/
 
 resource "kubernetes_service_account" "external_dns" {
   for_each = local.config
@@ -101,8 +127,9 @@ resource "kubernetes_service_account" "external_dns" {
   }
 }
 
-module "aws_permissions" {
+/*module "aws_permissions" {
   for_each = local.config
+
   source   = "../kube_sa_auth_aws"
 
   service_account           = kubernetes_service_account.external_dns[each.key].metadata[0].name
@@ -120,7 +147,7 @@ module "aws_permissions" {
   is_local         = var.is_local
   extra_tags       = var.extra_tags
   # end-generate
-}
+}*/
 
 
 /***************************************
@@ -210,19 +237,15 @@ resource "helm_release" "external_dns" {
 
       // Provider configuration
       provider = {
-        name = "aws"
+        name = each.value.provider
       }
-      extraArgs = concat(
-        [
-          "--aws-assume-role=${each.key}"
-        ],
-        [for domain in each.value.included_domains : "--domain-filter=${domain}"],
-        [for domain in each.value.excluded_domains : "--exclude-domains=${domain}"],
-        [for zone_id in each.value.zone_ids : "--zone-id-filter=${zone_id}"]
-      )
-      env = [
-        { name = "AWS_REGION", value = data.aws_region.main.name }
-      ]
+
+      domainFilters = each.value.included_domains
+      excludeDomains = each.value.excluded_domains
+
+      extraArgs = each.value.extra_args
+      env = each.value.env
+
       sources    = ["service", "ingress"]
       policy     = "upsert-only"
       txtOwnerId = random_id.ids[each.key].hex
@@ -238,7 +261,7 @@ resource "helm_release" "external_dns" {
     }
   }
 
-  depends_on = [module.aws_permissions]
+  // depends_on = [module.aws_permissions]
 }
 
 resource "kubernetes_config_map" "dashboard" {
